@@ -18,11 +18,11 @@ const createMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
-    nameRU,
-    nameEN,
+    trailerLink,
     thumbnail,
     movieId,
+    nameRU,
+    nameEN,
   } = req.body;
   Movie.create({
     country,
@@ -31,11 +31,11 @@ const createMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
-    nameRU,
-    nameEN,
+    trailerLink,
     thumbnail,
     movieId,
+    nameRU,
+    nameEN,
     owner: req.user._id,
   })
     .then((card) => res.status(201).send(card))

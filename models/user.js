@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.methods.receiveUser = () => {
+userSchema.methods.receiveUser = function receiveUser() {
   const user = this.toObject();
   delete user.password;
   return user;

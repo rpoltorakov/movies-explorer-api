@@ -12,24 +12,28 @@ const signup = (req, res, next) => {
     password,
     name,
   } = req.body;
-  bcrypt
-    .hash(password, 10)
-    .then((hashedPassword) => {
-      User
-        .create({
-          email,
-          password: hashedPassword,
-          name,
-        })
-        .then((user) => res.status(201).send(user.receiveUser()))
-        .catch((err) => {
-          if (err.name === 'ValidationError') {
-            next(new BadRequestError());
-          } else if (err.code === 11000) {
-            next(new ConflictError());
-          } else {
-            next(err);
-          }
+  User.findOne({ email })
+    .then((user) => {
+      if (user) {
+        throw new ConflictError();
+      }
+      bcrypt.hash(password, 10)
+        .then((hashedPassword) => {
+          User.create({
+            email,
+            password: hashedPassword,
+            name,
+          })
+            .then((createdUser) => res.status(201).send(createdUser.receiveUser()))
+            .catch((err) => {
+              if (err.name === 'ValidationError') {
+                next(new BadRequestError());
+              } else if (err.code === 11000) {
+                next(new ConflictError());
+              } else {
+                next(err);
+              }
+            });
         });
     })
     .catch((err) => {
