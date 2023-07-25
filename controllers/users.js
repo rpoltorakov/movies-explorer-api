@@ -6,6 +6,8 @@ const { ConflictError } = require('../utils/ConflictError');
 const { BadRequestError } = require('../utils/BadRequestError');
 const { UnauthorizedError } = require('../utils/UnauthorizedError');
 
+const { JWT_SECRET = 'development-jwt-token' } = process.env;
+
 const signup = (req, res, next) => {
   const {
     email,
@@ -59,7 +61,7 @@ const signin = (req, res, next) => {
           if (!matched) {
             throw new UnauthorizedError();
           }
-          const token = jwt.sign({ _id: user._id }, 'development-jwt-token');
+          const token = jwt.sign({ _id: user._id }, JWT_SECRET);
           res.cookie('jwt', token, {
             expiresIn: '7d',
             httpOnly: true,

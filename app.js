@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
@@ -18,10 +19,8 @@ app.use(requestLogger);
 app.use(cors({
   credentials: true,
   origin: [
-    // 'https://api.moviexp.rpoltorakov.nomoredomains.xyz',
-    // 'https://moviexp.rpoltorakov.nomoredomains.xyz',
-    'http://localhost:3000',
-    'http://localhost:3001',
+    'https://api.moviexp.rpoltorakov.nomoredomains.xyz',
+    'https://moviexp.rpoltorakov.nomoredomains.xyz',
   ],
 }));
 
@@ -30,6 +29,4 @@ app.use(errorLogger);
 app.use(errors());
 app.use(errorMiddleware);
 
-app.listen(PORT, () => {
-  console.log(`Listening Port: ${PORT}`);
-});
+app.listen(PORT);
