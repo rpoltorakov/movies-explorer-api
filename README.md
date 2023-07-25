@@ -28,3 +28,4 @@ HTTP REST API для проекта movies-explorer
 
 ### TODO:
 - Документация в формате *swagger*
+- Рефакторинг ошибок
