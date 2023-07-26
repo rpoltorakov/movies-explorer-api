@@ -1,6 +1,8 @@
+const { NOT_FOUND_MESSAGE } = require('./constants');
+
 class NotFoundError extends Error {
   constructor() {
-    super('Not found');
+    super(NOT_FOUND_MESSAGE);
     this.statusCode = 404;
   }
 }

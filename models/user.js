@@ -4,6 +4,7 @@ const validator = require('validator');
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
+    unique: true,
     required: true,
     validate: {
       validator: (email) => validator.isEmail(email),
