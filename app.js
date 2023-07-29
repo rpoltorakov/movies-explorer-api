@@ -7,12 +7,14 @@ const cors = require('cors');
 const { errorMiddleware } = require('./utils/errorMiddleware');
 const router = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { DB_URL_DEV } = require('./utils/constants');
 
 const { PORT = 3000 } = process.env;
+const DB_URL = process.env.NODE_ENV !== 'production' ? DB_URL_DEV : process.env.DB_URL;
 
 const app = express();
 app.use(express.json());
-mongoose.connect('mongodb://127.0.0.1:27017/movies-explorer-api');
+mongoose.connect(DB_URL);
 app.use(cookieParser());
 app.use(requestLogger);
 

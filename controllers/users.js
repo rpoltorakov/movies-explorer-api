@@ -4,9 +4,10 @@ const User = require('../models/user');
 const { NotFoundError } = require('../utils/NotFoundError');
 const { ConflictError } = require('../utils/ConflictError');
 const { BadRequestError } = require('../utils/BadRequestError');
-const { UnauthorizedError } = require('../utils/UnauthorizedError');
+const { ForbiddenError } = require('../utils/ForbiddenError');
+const { WRONG_USERNAME_OR_PASSWORD_MESSAGE } = require('../utils/constants');
 
-const JWT_SECRET = process.env.NODE_ENV !== 'production' ? process.env.JWT_SECRET : 'development-jwt-token'
+const JWT_SECRET = process.env.NODE_ENV !== 'production' ? 'development-jwt-token' : process.env.JWT_SECRET;
 
 const signup = (req, res, next) => {
   const {
@@ -53,13 +54,13 @@ const signin = (req, res, next) => {
   User.findOne({ email })
     .select('+password')
     .orFail(() => {
-      throw new UnauthorizedError();
+      throw new ForbiddenError(WRONG_USERNAME_OR_PASSWORD_MESSAGE);
     })
     .then((user) => {
       bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            throw new UnauthorizedError();
+            throw new ForbiddenError(WRONG_USERNAME_OR_PASSWORD_MESSAGE);
           }
           const token = jwt.sign({ _id: user._id }, JWT_SECRET);
           res.cookie('jwt', token, {
